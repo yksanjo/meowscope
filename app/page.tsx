@@ -1,65 +1,186 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import AudioRecorder from '@/components/AudioRecorder';
+import FGCWheel from '@/components/FGCWheel';
+import AnalysisResults from '@/components/AnalysisResults';
+import TierModal from '@/components/TierModal';
+import { analyzeCatVocalization } from '@/lib/fgc-data';
+import type { FGCClass, FGCCategory } from '@/lib/fgc-data';
+import type { UserTier } from '@/components/AnalysisResults';
 
 export default function Home() {
+  const [userTier, setUserTier] = useState<UserTier>('basic');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showTierModal, setShowTierModal] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<{
+    primaryClass: FGCClass;
+    confidence: number;
+    allPredictions: Array<{ class: FGCClass; confidence: number }>;
+  } | null>(null);
+
+  const handleAnalyze = async (audioBlob?: Blob) => {
+    setIsAnalyzing(true);
+
+    // Simulate analysis delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Perform mock analysis
+    const result = analyzeCatVocalization(audioBlob);
+    setAnalysisResult(result);
+    setIsAnalyzing(false);
+  };
+
+  const handleUpgrade = () => {
+    setShowTierModal(true);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="text-4xl">🐱</div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  MeowScope
+                </h1>
+                <p className="text-sm text-gray-600">AI Cat Voice Analyzer</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:block">
+                <div className="text-sm text-gray-600">Current Plan:</div>
+                <div className={`font-bold ${
+                  userTier === 'enhanced'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent'
+                    : 'text-gray-800'
+                }`}>
+                  {userTier === 'basic' ? 'Basic (Free)' : 'Enhanced'}
+                </div>
+              </div>
+              <button
+                onClick={() => setShowTierModal(true)}
+                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all text-sm"
+              >
+                {userTier === 'basic' ? 'Upgrade' : 'Manage Plan'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            Decode Your Cat's Voice
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Using advanced AI and the FGC2.3 classification system, MeowScope translates
+            your cat's vocalizations into meaningful insights with 97.5% accuracy.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+
+        {/* FGC Wheel Visualization */}
+        <div className="mb-12">
+          <FGCWheel
+            highlightCategory={analysisResult?.primaryClass.category}
+            highlightCode={analysisResult?.primaryClass.code}
+          />
+        </div>
+
+        {/* Audio Recorder */}
+        <div className="mb-12">
+          <AudioRecorder onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
+        </div>
+
+        {/* Analysis Results */}
+        {analysisResult && (
+          <div className="mb-12 animate-fadeIn">
+            <AnalysisResults
+              primaryClass={analysisResult.primaryClass}
+              confidence={analysisResult.confidence}
+              allPredictions={analysisResult.allPredictions}
+              userTier={userTier}
+              onUpgrade={handleUpgrade}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+        )}
+
+        {/* Features Section */}
+        <div className="mt-16 bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            How MeowScope Works
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-5xl mb-4">🎤</div>
+              <h4 className="font-bold text-gray-900 mb-2">1. Record or Upload</h4>
+              <p className="text-gray-600">
+                Capture your cat's vocalization using your microphone or upload an audio file
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl mb-4">🤖</div>
+              <h4 className="font-bold text-gray-900 mb-2">2. AI Analysis</h4>
+              <p className="text-gray-600">
+                Our trained CNN+LSTM model analyzes the audio using FGC2.3 classification
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl mb-4">💡</div>
+              <h4 className="font-bold text-gray-900 mb-2">3. Get Insights</h4>
+              <p className="text-gray-600">
+                Receive detailed analysis of your cat's mood, needs, and communication
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Science Section */}
+        <div className="mt-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 border-2 border-purple-200">
+          <div className="flex items-start gap-4">
+            <div className="text-4xl flex-shrink-0">🔬</div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Based on Scientific Research
+              </h3>
+              <p className="text-gray-700">
+                MeowScope uses the FGC2.3 (Feline Glossary Classification v2.3) system
+                developed by Dr. Vlad Reznikov. Our AI model was trained on 2,700+ samples
+                and achieves 97.5% accuracy in classifying 40 distinct cat vocalizations
+                across 5 behavioral categories: Food, Life, Fight, Sex, and Complaint.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-gray-200 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-gray-600">
+            <p className="mb-2">
+              Built with FGC2.3 Classification System
+            </p>
+            <p className="text-sm">
+              © 2025 MeowScope. For research and educational purposes.
+            </p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Tier Modal */}
+      <TierModal
+        isOpen={showTierModal}
+        onClose={() => setShowTierModal(false)}
+        currentTier={userTier}
+        onSelectTier={setUserTier}
+      />
     </div>
   );
 }
