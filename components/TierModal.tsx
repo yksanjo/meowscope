@@ -1,20 +1,87 @@
 'use client';
 
+import { useState } from 'react';
 import { UserTier } from './AnalysisResults';
+import type { User } from '@supabase/supabase-js';
+import type { Profile } from '@/lib/types/database';
 
 interface TierModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentTier: UserTier;
   onSelectTier: (tier: UserTier) => void;
+  user: User | null;
+  profile: Profile | null;
 }
 
-export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }: TierModalProps) {
+export default function TierModal({
+  isOpen,
+  onClose,
+  currentTier,
+  onSelectTier,
+  user,
+  profile,
+}: TierModalProps) {
+  const [loading, setLoading] = useState(false);
+
   if (!isOpen) return null;
 
-  const handleSelectTier = (tier: UserTier) => {
-    onSelectTier(tier);
-    onClose();
+  const handleUpgrade = async () => {
+    if (!user) {
+      alert('Please sign in first');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Call checkout API
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+      });
+
+      const { url, error } = await response.json();
+
+      if (error) {
+        alert(error);
+      } else if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Upgrade error:', error);
+      alert('Failed to start checkout');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    if (!user || !profile?.stripe_customer_id) {
+      alert('No subscription found');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Call portal API
+      const response = await fetch('/api/create-portal-session', {
+        method: 'POST',
+      });
+
+      const { url, error } = await response.json();
+
+      if (error) {
+        alert(error);
+      } else if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Portal error:', error);
+      alert('Failed to open customer portal');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,9 +110,13 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
           {/* Tier Cards */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Basic Tier */}
-            <div className={`relative rounded-xl border-2 p-6 ${
-              currentTier === 'basic' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 bg-white'
-            }`}>
+            <div
+              className={`relative rounded-xl border-2 p-6 ${
+                currentTier === 'basic'
+                  ? 'border-purple-500 bg-purple-50'
+                  : 'border-gray-200 bg-white'
+              }`}
+            >
               {currentTier === 'basic' && (
                 <div className="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   Current
@@ -60,13 +131,16 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
               </div>
 
               <p className="text-gray-600 mb-6">
-                Perfect for casual cat owners who want to understand their cat's general mood
+                Perfect for casual cat owners who want to understand their cat's
+                general mood
               </p>
 
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700">5 main category detection (Food, Life, Fight, Sex, Complaint)</span>
+                  <span className="text-gray-700">
+                    5 main category detection (Food, Life, Fight, Sex, Complaint)
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
@@ -74,7 +148,9 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700">FGC2.3 wheel visualization</span>
+                  <span className="text-gray-700">
+                    FGC2.3 wheel visualization
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
@@ -95,24 +171,21 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
               </ul>
 
               <button
-                onClick={() => handleSelectTier('basic')}
-                disabled={currentTier === 'basic'}
-                className={`w-full py-3 rounded-lg font-semibold transition-all ${
-                  currentTier === 'basic'
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-gray-800 text-white hover:bg-gray-900'
-                }`}
+                disabled={true}
+                className="w-full py-3 rounded-lg font-semibold transition-all bg-gray-100 text-gray-400 cursor-not-allowed"
               >
-                {currentTier === 'basic' ? 'Current Plan' : 'Select Basic'}
+                {currentTier === 'basic' ? 'Current Plan' : 'Downgrade'}
               </button>
             </div>
 
             {/* Enhanced Tier */}
-            <div className={`relative rounded-xl border-2 p-6 ${
-              currentTier === 'enhanced'
-                ? 'border-gradient bg-gradient-to-br from-purple-50 to-pink-50'
-                : 'border-purple-500 bg-gradient-to-br from-purple-50 to-pink-50'
-            }`}>
+            <div
+              className={`relative rounded-xl border-2 p-6 ${
+                currentTier === 'enhanced'
+                  ? 'border-gradient bg-gradient-to-br from-purple-50 to-pink-50'
+                  : 'border-purple-500 bg-gradient-to-br from-purple-50 to-pink-50'
+              }`}
+            >
               {currentTier === 'enhanced' && (
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   Current
@@ -126,7 +199,9 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
               </div>
 
               <div className="mb-4 mt-2">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Enhanced</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Enhanced
+                </h3>
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     $4.99
@@ -136,29 +211,42 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
               </div>
 
               <p className="text-gray-700 mb-6 font-medium">
-                Complete scientific analysis for cat enthusiasts and professionals
+                Complete scientific analysis for cat enthusiasts and
+                professionals
               </p>
 
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700 font-medium">Everything in Basic, plus:</span>
+                  <span className="text-gray-700 font-medium">
+                    Everything in Basic, plus:
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700"><strong>All 40 vocalization types</strong> with specific classifications</span>
+                  <span className="text-gray-700">
+                    <strong>All 40 vocalization types</strong> with specific
+                    classifications
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700"><strong>FGC2.3 codes</strong> (e.g., f140A, f360A)</span>
+                  <span className="text-gray-700">
+                    <strong>FGC2.3 codes</strong> (e.g., f140A, f360A)
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700"><strong>Alternative predictions</strong> with confidence scores</span>
+                  <span className="text-gray-700">
+                    <strong>Alternative predictions</strong> with confidence
+                    scores
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700"><strong>Detailed descriptions</strong> of each vocalization</span>
+                  <span className="text-gray-700">
+                    <strong>Detailed descriptions</strong> of each vocalization
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
@@ -166,47 +254,69 @@ export default function TierModal({ isOpen, onClose, currentTier, onSelectTier }
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-500 flex-shrink-0 mt-1">✓</span>
-                  <span className="text-gray-700">Sound type analysis (SS/RS/CSS)</span>
+                  <span className="text-gray-700">
+                    Sound type analysis (SS/RS/CSS)
+                  </span>
                 </li>
               </ul>
 
-              <button
-                onClick={() => handleSelectTier('enhanced')}
-                disabled={currentTier === 'enhanced'}
-                className={`w-full py-3 rounded-lg font-bold transition-all ${
-                  currentTier === 'enhanced'
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 transform hover:scale-[1.02]'
-                }`}
-              >
-                {currentTier === 'enhanced' ? 'Current Plan' : 'Upgrade to Enhanced'}
-              </button>
+              {currentTier === 'enhanced' ? (
+                <button
+                  onClick={handleManageSubscription}
+                  disabled={loading}
+                  className="w-full py-3 rounded-lg font-bold transition-all bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 disabled:opacity-50"
+                >
+                  {loading ? 'Loading...' : 'Manage Subscription'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleUpgrade}
+                  disabled={loading}
+                  className="w-full py-3 rounded-lg font-bold transition-all bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 transform hover:scale-[1.02] disabled:opacity-50"
+                >
+                  {loading ? 'Loading...' : 'Upgrade to Enhanced'}
+                </button>
+              )}
             </div>
           </div>
 
           {/* Features Comparison */}
           <div className="mt-8 p-6 bg-gray-50 rounded-xl">
-            <h4 className="font-bold text-gray-900 mb-4">Why Upgrade to Enhanced?</h4>
+            <h4 className="font-bold text-gray-900 mb-4">
+              Why Upgrade to Enhanced?
+            </h4>
             <div className="grid md:grid-cols-3 gap-4">
               <div className="flex items-start gap-3">
                 <span className="text-2xl">🔬</span>
                 <div>
-                  <div className="font-semibold text-gray-900">Scientific Accuracy</div>
-                  <div className="text-sm text-gray-600">Based on FGC2.3 research with 97.5% accuracy</div>
+                  <div className="font-semibold text-gray-900">
+                    Scientific Accuracy
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Based on FGC2.3 research with 97.5% accuracy
+                  </div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-2xl">🎯</span>
                 <div>
-                  <div className="font-semibold text-gray-900">Precise Classification</div>
-                  <div className="text-sm text-gray-600">40 distinct vocalizations vs 5 categories</div>
+                  <div className="font-semibold text-gray-900">
+                    Precise Classification
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    40 distinct vocalizations vs 5 categories
+                  </div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-2xl">💡</span>
                 <div>
-                  <div className="font-semibold text-gray-900">Expert Insights</div>
-                  <div className="text-sm text-gray-600">Understand the exact meaning behind each meow</div>
+                  <div className="font-semibold text-gray-900">
+                    Expert Insights
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Understand the exact meaning behind each meow
+                  </div>
                 </div>
               </div>
             </div>

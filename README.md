@@ -51,8 +51,10 @@ Each category contains 4-17 specific vocalization types, allowing for precise cl
 ### Prerequisites
 - Node.js 18+
 - npm or yarn
+- Supabase account (for authentication & database)
+- Stripe account (for payments)
 
-### Installation
+### Quick Start (Development)
 
 ```bash
 # Clone the repository
@@ -62,11 +64,23 @@ cd meowscope
 # Install dependencies
 npm install
 
+# Set up environment variables (see SETUP.md for details)
+cp .env.example .env.local
+# Edit .env.local with your Supabase and Stripe credentials
+
 # Run the development server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Full Setup (With Auth & Payments)
+
+For complete setup including authentication and Stripe payments, see **[SETUP.md](./SETUP.md)** for detailed instructions on:
+- Setting up Supabase (authentication & database)
+- Configuring Stripe (products & webhooks)
+- Environment variables
+- Testing & deployment
 
 ## 🛠️ Tech Stack
 
@@ -74,6 +88,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Audio Processing**: Web Audio API
+- **Authentication**: Supabase Auth
+- **Database**: Supabase (PostgreSQL)
+- **Payments**: Stripe
 - **Deployment**: Vercel
 
 ## 📱 How to Use
