@@ -11,8 +11,9 @@ export default function FGCWheel({ highlightCategory, highlightCode }: FGCWheelP
   const categories: FGCCategory[] = ['FOOD', 'LIFE', 'FIGHT', 'SEX', 'COMPLAINT'];
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto aspect-square">
-      <svg viewBox="0 0 400 400" className="w-full h-full">
+    <div className="relative w-full max-w-2xl mx-auto">
+      <div className="w-full aspect-square rounded-3xl bg-white shadow-[var(--shadow-premium-lg)] p-8 border border-purple-100">
+        <svg viewBox="0 0 400 400" className="w-full h-full drop-shadow-md">
         {/* Center circle */}
         <circle
           cx="200"
@@ -99,13 +100,15 @@ export default function FGCWheel({ highlightCategory, highlightCode }: FGCWheelP
               <path
                 d={pathData}
                 fill={categoryData.color}
-                opacity={isHighlighted ? 1 : 0.7}
+                opacity={isHighlighted ? 1 : 0.85}
                 stroke="white"
-                strokeWidth="2"
-                className="transition-all duration-300"
+                strokeWidth="3"
+                className="transition-all duration-500 cursor-pointer"
                 style={{
-                  filter: isHighlighted ? 'drop-shadow(0 0 10px rgba(0,0,0,0.3))' : 'none',
-                  transform: isHighlighted ? 'scale(1.05)' : 'scale(1)',
+                  filter: isHighlighted
+                    ? `drop-shadow(0 0 16px ${categoryData.color}80) brightness(1.1)`
+                    : 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+                  transform: isHighlighted ? 'scale(1.08)' : 'scale(1)',
                   transformOrigin: '200px 200px'
                 }}
               />
@@ -158,10 +161,11 @@ export default function FGCWheel({ highlightCategory, highlightCode }: FGCWheelP
             />
           );
         })}
-      </svg>
+        </svg>
+      </div>
 
       {/* Legend */}
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
         {categories.map((category) => {
           const categoryData = FGC_CATEGORIES[category];
           const isHighlighted = highlightCategory === category;
@@ -169,17 +173,23 @@ export default function FGCWheel({ highlightCategory, highlightCode }: FGCWheelP
           return (
             <div
               key={category}
-              className={`flex items-center gap-2 p-2 rounded-lg transition-all ${
-                isHighlighted ? 'bg-gray-100 scale-105' : ''
+              className={`flex items-center gap-3 p-4 rounded-xl transition-all duration-300 ${
+                isHighlighted
+                  ? 'bg-white shadow-[var(--shadow-premium-md)] scale-105 border-2'
+                  : 'bg-gray-50 border border-gray-200'
               }`}
+              style={isHighlighted ? { borderColor: categoryData.color } : {}}
             >
               <div
-                className="w-4 h-4 rounded-full flex-shrink-0"
-                style={{ backgroundColor: categoryData.color }}
+                className="w-5 h-5 rounded-full flex-shrink-0 shadow-sm"
+                style={{
+                  backgroundColor: categoryData.color,
+                  boxShadow: isHighlighted ? `0 2px 8px ${categoryData.color}40` : 'none'
+                }}
               />
               <div className="text-sm">
-                <div className="font-semibold text-gray-800">{categoryData.name}</div>
-                <div className="text-xs text-gray-500">
+                <div className="font-bold text-gray-900">{categoryData.name}</div>
+                <div className="text-xs text-gray-500 font-medium">
                   {getFGCClassesByCategory(category).length} types
                 </div>
               </div>

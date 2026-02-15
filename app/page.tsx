@@ -117,18 +117,24 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #faf5ff 0%, #fdf2f8 50%, #eff6ff 100%)' }}>
+      {/* Animated Gradient Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
+
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
+      <header className="glass-card sticky top-0 z-40 border-b-0" style={{ boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="text-4xl">🐱</div>
+            <div className="flex items-center gap-3 group">
+              <div className="text-4xl transition-transform duration-300 group-hover:scale-110">🐱</div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-purple-500 to-pink-600 bg-clip-text text-transparent">
                   MeowScope
                 </h1>
-                <p className="text-sm text-gray-600">AI Cat Voice Analyzer</p>
+                <p className="text-sm text-gray-600 font-medium">AI Cat Voice Analyzer</p>
               </div>
             </div>
 
@@ -151,13 +157,13 @@ export default function Home() {
                   </div>
                   <button
                     onClick={() => setShowTierModal(true)}
-                    className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all text-sm"
+                    className="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-sm shadow-[var(--shadow-premium-md)] hover:shadow-[var(--shadow-premium-lg)] transition-all duration-300 hover:scale-105"
                   >
                     {userTier === 'basic' ? 'Upgrade' : 'Manage Plan'}
                   </button>
                   <button
                     onClick={handleSignOut}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all text-sm"
+                    className="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-300 text-sm"
                   >
                     Sign Out
                   </button>
@@ -165,7 +171,7 @@ export default function Home() {
               ) : (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all text-sm"
+                  className="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-sm shadow-[var(--shadow-premium-md)] hover:shadow-[var(--shadow-premium-lg)] transition-all duration-300 hover:scale-105"
                 >
                   Sign In
                 </button>
@@ -176,13 +182,16 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Decode Your Cat's Voice
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            Decode Your Cat's{' '}
+            <span className="block bg-gradient-to-r from-purple-600 via-purple-500 to-pink-600 bg-clip-text text-transparent">
+              Voice
+            </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
             Using advanced AI and the FGC2.3 classification system, MeowScope
             translates your cat's vocalizations into meaningful insights with
             97.5% accuracy.
@@ -216,33 +225,33 @@ export default function Home() {
         )}
 
         {/* Features Section */}
-        <div className="mt-16 bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        <div className="mt-16 bg-white rounded-2xl shadow-[var(--shadow-premium-lg)] p-8 sm:p-10 border border-purple-100 hover-lift">
+          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             How MeowScope Works
           </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-5xl mb-4">🎤</div>
-              <h4 className="font-bold text-gray-900 mb-2">
+          <div className="grid md:grid-cols-3 gap-8 sm:gap-10">
+            <div className="text-center group">
+              <div className="text-6xl mb-6 transition-transform duration-300 group-hover:scale-110">🎤</div>
+              <h4 className="font-bold text-gray-900 mb-3 text-lg">
                 1. Record or Upload
               </h4>
-              <p className="text-gray-600">
+              <p className="text-gray-600 leading-relaxed">
                 Capture your cat's vocalization using your microphone or upload
                 an audio file
               </p>
             </div>
-            <div className="text-center">
-              <div className="text-5xl mb-4">🤖</div>
-              <h4 className="font-bold text-gray-900 mb-2">2. AI Analysis</h4>
-              <p className="text-gray-600">
+            <div className="text-center group">
+              <div className="text-6xl mb-6 transition-transform duration-300 group-hover:scale-110">🤖</div>
+              <h4 className="font-bold text-gray-900 mb-3 text-lg">2. AI Analysis</h4>
+              <p className="text-gray-600 leading-relaxed">
                 Our trained CNN+LSTM model analyzes the audio using FGC2.3
                 classification
               </p>
             </div>
-            <div className="text-center">
-              <div className="text-5xl mb-4">💡</div>
-              <h4 className="font-bold text-gray-900 mb-2">3. Get Insights</h4>
-              <p className="text-gray-600">
+            <div className="text-center group">
+              <div className="text-6xl mb-6 transition-transform duration-300 group-hover:scale-110">💡</div>
+              <h4 className="font-bold text-gray-900 mb-3 text-lg">3. Get Insights</h4>
+              <p className="text-gray-600 leading-relaxed">
                 Receive detailed analysis of your cat's mood, needs, and
                 communication
               </p>
@@ -251,14 +260,15 @@ export default function Home() {
         </div>
 
         {/* Science Section */}
-        <div className="mt-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 border-2 border-purple-200">
-          <div className="flex items-start gap-4">
-            <div className="text-4xl flex-shrink-0">🔬</div>
+        <div className="mt-8 relative overflow-hidden rounded-2xl p-8 sm:p-10 border-2 border-purple-300 shadow-[var(--shadow-premium-md)] hover-lift">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 opacity-80" />
+          <div className="relative z-10 flex items-start gap-4 sm:gap-6">
+            <div className="text-5xl flex-shrink-0 transition-transform duration-300 hover:rotate-12">🔬</div>
             <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
                 Based on Scientific Research
               </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 leading-relaxed text-lg">
                 MeowScope uses the FGC2.3 (Feline Glossary Classification v2.3)
                 system developed by Dr. Vlad Reznikov. Our AI model was trained
                 on 2,700+ samples and achieves 97.5% accuracy in classifying 40
