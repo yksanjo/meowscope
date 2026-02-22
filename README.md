@@ -1,161 +1,84 @@
-# 🐱 MeowScope - AI Cat Voice Analyzer
+# meowscope
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yksanjo/meowscope)
+## Detailed Description
 
-MeowScope is an advanced AI-powered cat vocalization analyzer that decodes your cat's meows, purrs, and other sounds using the scientifically-grounded FGC2.3 (Feline Glossary Classification v2.3) system.
+meowscope is maintained as an industry-grade software project with production-ready engineering practices.  
+This repository includes documented setup, quality gates, operational guidance, and governance standards so contributors can safely build, test, and ship changes with confidence.
 
-## ✨ Features
+## Problem Statement
 
-### 🎯 Accurate Analysis
-- **97.5% accuracy** using CNN+LSTM deep learning models
-- **40 distinct vocalization types** classified across 5 behavioral categories
-- Based on 2,700+ training samples from scientific research
+Describe the user or business problem this project solves, the target users, and expected outcomes.
 
-### 🎨 Beautiful Visualization
-- Interactive FGC2.3 classification wheel
-- Real-time category highlighting
-- Clean, modern UI with responsive design
+## Solution Overview
 
-### 📊 Tiered Access
+Summarize the architecture, core modules, and runtime behavior at a high level.
 
-#### Basic (Free)
-- 5 main category detection (Food, Life, Fight, Sex, Complaint)
-- Basic mood analysis
-- FGC2.3 wheel visualization
-- Unlimited analyses
+## Key Features
 
-#### Enhanced ($4.99/month)
-- All 40 vocalization types with specific classifications
-- FGC2.3 codes (e.g., f140A, f360A)
-- Alternative predictions with confidence scores
-- Detailed descriptions of each vocalization
-- Gender/age classification
-- Sound type analysis (SS/RS/CSS)
+- Clear project scope and intended use.
+- Reproducible local development workflow.
+- Test coverage and CI quality gates.
+- Security and contribution policies.
+- Deployment-ready repository structure.
 
-## 🔬 Science Behind MeowScope
+## Repository Structure
 
-MeowScope is built on the FGC2.3 system developed by Dr. Vlad Reznikov, which classifies cat vocalizations into 40 distinct categories:
-
-### The 5 Main Categories:
-
-1. **🍽️ FOOD** - Food-related vocalizations (hunger, anticipation, eating sounds)
-2. **😺 LIFE** - Life events and social calls (purring, greeting, calls for attention)
-3. **⚔️ FIGHT** - Defensive and aggressive sounds (hissing, growling, spitting)
-4. **💕 SEX** - Mating-related vocalizations
-5. **🏥 COMPLAINT** - Distress and health-related sounds (pain, coughing, sneezing)
-
-Each category contains 4-17 specific vocalization types, allowing for precise classification of your cat's communication.
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-- Supabase account (for authentication & database)
-- Stripe account (for payments)
-
-### Quick Start (Development)
-
-```bash
-# Clone the repository
-git clone https://github.com/yksanjo/meowscope.git
-cd meowscope
-
-# Install dependencies
-npm install
-
-# Set up environment variables (see SETUP.md for details)
-cp .env.example .env.local
-# Edit .env.local with your Supabase and Stripe credentials
-
-# Run the development server
-npm run dev
+```text
+.
+|-- src/                  # Core implementation
+|-- tests/                # Automated test suites
+|-- docs/                 # Design notes and operational docs
+|-- .github/workflows/    # CI pipelines
+|-- README.md
+|-- LICENSE
+|-- CONTRIBUTING.md
+|-- SECURITY.md
+|-- CODE_OF_CONDUCT.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## Getting Started
 
-### Full Setup (With Auth & Payments)
+### Prerequisites
 
-For complete setup including authentication and Stripe payments, see **[SETUP.md](./SETUP.md)** for detailed instructions on:
-- Setting up Supabase (authentication & database)
-- Configuring Stripe (products & webhooks)
-- Environment variables
-- Testing & deployment
+- Git
+- Project runtime/toolchain for this repo
 
-## 🛠️ Tech Stack
+### Local Setup
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Audio Processing**: Web Audio API
-- **Authentication**: Supabase Auth
-- **Database**: Supabase (PostgreSQL)
-- **Payments**: Stripe
-- **Deployment**: Vercel
+```bash
+npm ci
+npm run lint
+npm test
+npm run build
+```
 
-## 📱 How to Use
+## Usage
 
-1. **Record or Upload**: Use your microphone to record your cat's vocalization or upload an audio file
-2. **Analyze**: Click the "Analyze Cat Voice" button
-3. **Get Results**: View the detected category, confidence score, and detailed insights
+Document primary commands, API routes, CLI examples, or UI workflows here.
 
-## 🎨 FGC2.3 Classification Wheel
+## Quality Standards
 
-The interactive wheel visualization shows all 5 behavioral categories:
-- Color-coded segments for easy identification
-- Real-time highlighting of detected categories
-- Hover effects and smooth animations
+- CI must pass before merge.
+- Changes require tests for critical behavior.
+- Security-sensitive changes should include risk notes.
+- Keep pull requests focused and reviewable.
 
-## 📊 Example Vocalizations
+## Security
 
-| Code | Category | Definition | Meaning |
-|------|----------|------------|---------|
-| f140A | FOOD | Hunger | Standard hunger meow |
-| f220A | LIFE | Relaxation | Relaxed, happy purring |
-| f360A | FIGHT | Adult Hissing | Aggressive warning hiss |
-| f410M | SEX | Mating | Male mating call |
-| f560A | COMPLAINT | Paining | Pain expression |
+See `SECURITY.md` for responsible disclosure and handling guidelines.
 
-## 🔮 Future Enhancements
+## Contributing
 
-- [ ] Real ML model integration (currently using mock predictions)
-- [ ] User authentication and saved analysis history
-- [ ] Multi-cat profile support
-- [ ] Temporal analysis (tracking changes over time)
-- [ ] Mobile app (iOS/Android)
-- [ ] API for developers
+See `CONTRIBUTING.md` for branching, commit, and pull request expectations.
 
-## 📚 Research Reference
+## Roadmap
 
-Based on the research paper:
-> **FGC2.3 Feline Vocalization Classification and Cat Translation Project**
-> Dr. Vlad Reznikov, Pattern of USA Inc., May 2025
-> DOI: 10.13140/RG.2.2.26145.93286
+Track upcoming milestones, technical debt, and planned feature work.
 
-## 🤝 Contributing
+## Support
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Open a GitHub issue for bugs, feature requests, or documentation gaps.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## License
 
-## 📄 License
-
-This project is for research and educational purposes. The FGC2.3 classification system is © 2020 Vladyslav Reznykov.
-
-## 🙏 Acknowledgments
-
-- Dr. Vlad Reznikov for the FGC2.3 classification system
-- The feline behavior research community
-- All the cats who contributed their vocalizations to science
-
-## 📧 Contact
-
-For questions or feedback, please open an issue on GitHub.
-
----
-
-Made with ❤️ for cat lovers and science enthusiasts
+This project is released under the MIT License.
