@@ -17,16 +17,25 @@ export default function AnalysisResults({
   confidence,
   allPredictions,
   userTier,
-  onUpgrade
 }: AnalysisResultsProps) {
   const categoryData = FGC_CATEGORIES[primaryClass.category];
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-fadeIn">
       <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-[var(--shadow-premium-xl)] p-8 sm:p-10 border border-purple-100">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
           Analysis Results
         </h2>
+
+        {/* Honesty disclaimer — the result is randomized, not a real classifier */}
+        <div className="mb-8 rounded-2xl border-2 border-amber-300 bg-amber-50 px-5 py-4 text-center">
+          <p className="text-amber-900 font-semibold">
+            😺 Just for fun — meowscope does not actually analyze your cat&apos;s audio.
+          </p>
+          <p className="text-amber-800 text-sm mt-1">
+            Results (including the &ldquo;confidence&rdquo; score) are randomly generated for entertainment, not a validated ML model.
+          </p>
+        </div>
 
         {/* Primary Result - Available to all tiers */}
         <div
@@ -126,13 +135,12 @@ export default function AnalysisResults({
                 </div>
 
                 <button
-                  onClick={onUpgrade}
-                  className="w-full py-4 bg-gradient-to-r from-purple-600 via-purple-500 to-pink-600 text-white rounded-xl font-black text-lg shadow-[var(--shadow-premium-lg)] hover:shadow-[var(--shadow-premium-xl)] transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden group"
+                  disabled
+                  className="w-full py-4 bg-gray-200 text-gray-500 rounded-xl font-black text-lg cursor-not-allowed relative overflow-hidden"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                    <span className="text-2xl">✨</span>
-                    <span>Upgrade to Enhanced - $4.99/mo</span>
+                    <span className="text-2xl">🚧</span>
+                    <span>Paid plan disabled — results are for fun, not a real classifier</span>
                   </span>
                 </button>
               </div>

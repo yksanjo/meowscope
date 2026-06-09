@@ -3,6 +3,14 @@ import { createCheckoutSession } from '@/lib/stripe';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
+  // Paid plans are disabled: the analysis is randomized for entertainment and
+  // is not a validated ML classifier, so we do not charge for "Enhanced" results.
+  return NextResponse.json(
+    { error: 'Paid plans are disabled while the analysis is for-entertainment only.' },
+    { status: 503 }
+  );
+
+  // eslint-disable-next-line no-unreachable
   try {
     const supabase = await createClient();
 
