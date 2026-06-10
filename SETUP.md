@@ -77,9 +77,11 @@ This guide will walk you through setting up authentication and payments for Meow
 1. In Stripe Dashboard, click "Developers" → "Webhooks"
 2. Click "+ Add endpoint"
 3. For **Endpoint URL**, enter:
-   ```
+
+   ```text
    https://your-app-url.vercel.app/api/webhooks
    ```
+
    (Replace with your actual Vercel URL - you'll get this after deployment)
 4. Click "Select events"
 5. Select these events:
@@ -114,7 +116,7 @@ NEXT_PUBLIC_STRIPE_ENHANCED_PRICE_ID=your_enhanced_tier_price_id
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-2. Replace all the `your_...` placeholders with the actual values you copied from Supabase and Stripe
+1. Replace all the `your_...` placeholders with the actual values you copied from Supabase and Stripe
 
 ### 3.2 Vercel Deployment
 
@@ -205,6 +207,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### Issue: Webhook not working
 
 **Solution**:
+
 1. Verify the webhook URL in Stripe matches your deployed app
 2. Check Stripe webhook logs for errors
 3. Make sure `STRIPE_WEBHOOK_SECRET` environment variable is set correctly
@@ -212,6 +215,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ### Issue: Email confirmation not arriving
 
 **Solution**:
+
 1. Check your spam folder
 2. In Supabase Dashboard → "Authentication" → "Rate Limits", increase limits if needed
 3. Check Supabase logs for email delivery errors
@@ -250,8 +254,8 @@ vercel --prod
 
 ## Need Help?
 
-- **Supabase Docs**: https://supabase.com/docs
-- **Stripe Docs**: https://stripe.com/docs
-- **Next.js Docs**: https://nextjs.org/docs
+- **Supabase Docs**: <https://supabase.com/docs>
+- **Stripe Docs**: <https://stripe.com/docs>
+- **Next.js Docs**: <https://nextjs.org/docs>
 
 For issues specific to MeowScope, open an issue on GitHub.
