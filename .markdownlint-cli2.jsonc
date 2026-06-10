@@ -1,6 +1,0 @@
-{
-  // Tune subjective rules; all structural/content rules stay enabled.
-  "config": {
-    "MD013": false // line-length: prose readability handled by editors, not hard wraps
-  }
-}
