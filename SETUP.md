@@ -1,6 +1,7 @@
 # MeowScope Setup Guide
 
-This guide will walk you through setting up authentication and payments for MeowScope using Supabase and Stripe.
+This guide will walk you through setting up authentication and payments for
+MeowScope using Supabase and Stripe.
 
 ## Prerequisites
 
@@ -49,7 +50,8 @@ This guide will walk you through setting up authentication and payments for Meow
 
 1. Go to [https://dashboard.stripe.com/register](https://dashboard.stripe.com/register)
 2. Sign up for a Stripe account
-3. After logging in, **toggle "Test mode"** in the top right (you'll see a "TEST DATA" badge)
+3. After logging in, **toggle "Test mode"** in the top right (you'll see a
+   "TEST DATA" badge)
 
 ### 2.2 Create Your Product & Price
 
@@ -100,23 +102,24 @@ This guide will walk you through setting up authentication and payments for Meow
 
 1. In your meowscope project folder, create a `.env.local` file:
 
-```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+   ```bash
+   # Supabase
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
-NEXT_PUBLIC_STRIPE_ENHANCED_PRICE_ID=your_enhanced_tier_price_id
+   # Stripe
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+   NEXT_PUBLIC_STRIPE_ENHANCED_PRICE_ID=your_enhanced_tier_price_id
 
-# App URL
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
+   # App URL
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   ```
 
-1. Replace all the `your_...` placeholders with the actual values you copied from Supabase and Stripe
+2. Replace all the `your_...` placeholders with the actual values you copied
+   from Supabase and Stripe
 
 ### 3.2 Vercel Deployment
 
@@ -198,11 +201,13 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ### Issue: "Failed to create checkout session"
 
-**Solution**: Check that your Stripe secret key is correctly set in environment variables
+**Solution**: Check that your Stripe secret key is correctly set in
+environment variables
 
 ### Issue: "No rows returned" or "Profile not found"
 
-**Solution**: Make sure you ran the database migration SQL and the trigger is working. Check Supabase logs.
+**Solution**: Make sure you ran the database migration SQL and the trigger is
+working. Check Supabase logs.
 
 ### Issue: Webhook not working
 
@@ -217,7 +222,8 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 **Solution**:
 
 1. Check your spam folder
-2. In Supabase Dashboard → "Authentication" → "Rate Limits", increase limits if needed
+2. In Supabase Dashboard → "Authentication" → "Rate Limits", increase limits
+   if needed
 3. Check Supabase logs for email delivery errors
 
 ---

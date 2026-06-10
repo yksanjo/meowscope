@@ -2,16 +2,20 @@
 
 ## Detailed Description
 
-meowscope is a application-focused project that evaluates core runtime signals to support reliable product operations.  
-This repository now includes a runnable baseline implementation, tests, and architecture documentation for production-oriented development.
+meowscope is a application-focused project that evaluates core runtime
+signals to support reliable product operations.
+This repository now includes a runnable baseline implementation, tests, and
+architecture documentation for production-oriented development.
 
 ## Problem Statement
 
-Teams need fast, deterministic signals to prioritize work and reduce operational risk.
+Teams need fast, deterministic signals to prioritize work and reduce
+operational risk.
 
 ## Solution Overview
 
-This project ingests runtime signals, computes a deterministic score, and emits structured results for downstream workflows.
+This project ingests runtime signals, computes a deterministic score, and
+emits structured results for downstream workflows.
 
 ## Stack
 
